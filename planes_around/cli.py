@@ -6,8 +6,8 @@ import logging
 import logging.config
 import json
 
-from conf import LOGGING
-import utils
+from planes_around.conf import LOGGING
+import planes_around.utils as utils
 
 logging.config.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)

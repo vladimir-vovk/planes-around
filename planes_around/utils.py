@@ -10,7 +10,7 @@ import requests
 import folium
 from geopy.distance import vincenty
 
-from conf import LOGGING, API_URL, LOCATION_API_URL, BY_NAME_API_URL
+from planes_around.conf import LOGGING, API_URL, LOCATION_API_URL, BY_NAME_API_URL
 
 logging.config.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)
