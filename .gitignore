@@ -1,0 +1,14 @@
+*.pyc
+.coverage
+.venv*
+venv
+build
+dist
+*.egg
+*.egg-info
+docs/_build
+.test_keys
+.tox
+*.config
+.DS_Store
+.idea/
