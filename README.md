@@ -2,6 +2,8 @@
 
 "Planes around" is a Python 3 utility that returns information about planes around the specified location.
 
+By default, the it tries to determine your location by IP address and looks for planes within a radius of 500 km.
+
 ## Installation
 
 1. Install python 3
