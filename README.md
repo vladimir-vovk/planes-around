@@ -28,7 +28,7 @@ optional arguments:
   --lng LNG             Longitude in degrees
   -r RADIUS, --radius RADIUS
                         Search planes within a radius (kilometers)
-  -n NAME, --name NAME  The name of the city or place near which you want to
+  -n NAME, --name NAME  The name of the city or place near which you want to search
 
   --no-map              Don't show the map
   --on-the-ground       Show only planes on the ground
