@@ -19,7 +19,7 @@ Or, clone this repository to your local machine.
 planes_around
 ```
 
-## Planes around optional arguments:
+## Optional arguments:
 ```
 usage: planes_around [-h] [--lat LAT] [--lng LNG] [-r RADIUS] [-n NAME]
                      [--on-the-ground | --in-the-sky]
