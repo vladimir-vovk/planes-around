@@ -4,6 +4,8 @@
 
 By default, it tries to determine your location by IP address and looks for planes within a radius of 500 km.
 
+![Screen shot](./screen.jpg)
+
 ## Installation
 
 1. Install python 3
