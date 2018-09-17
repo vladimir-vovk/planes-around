@@ -57,3 +57,9 @@ optional arguments:
 ```
 pytest
 ```
+
+## Future features
+
+* Draw aproximate trajectories
+* Check if plane will flies over the area (point +/- delta)
+
