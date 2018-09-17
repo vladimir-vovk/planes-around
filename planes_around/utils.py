@@ -28,7 +28,7 @@ def _open_browser(url):
             print('Please open a browser on: {}', url)
 
 
-def show_map(lat, lng, name, data):
+def show_map(lat, lng, name, data, radius=None):
     '''Shows map in selected location with planes data.
 
     Args:
@@ -39,13 +39,26 @@ def show_map(lat, lng, name, data):
     '''
     m = folium.Map(location=[lat, lng], zoom_start=7, tiles='Stamen Terrain')
     summary = '{}<br/>Total planes: {}'.format(name, len(data))
-    folium.CircleMarker(location=[lat, lng], popup=summary, fill=True, fill_color='#3186cc').add_to(m)
+    folium.CircleMarker(location=[lat, lng], popup=summary, fill=False, color='crimson').add_to(m)
+    # Display search radius
+    if radius:
+        folium.Circle(location=[lat, lng], popup=summary, fill=True, fill_color='#3186cc',
+                      radius=radius*1000).add_to(m)
 
     for info in data:
         summary = ('callsign: {callsign}<br/>country: {country}<br/>lat: {lat} deg, '
                    'lng: {lng} deg<br/>velocity: {velocity} m/s<br/>distance: {distance:.2f} km<br/>'
-                   'heading: {heading} deg from north<br/>on the ground: {on_ground}'.format(**info))
-        folium.Marker(location=[info['lat'], info['lng']], popup=summary, icon=folium.Icon(icon='plane')
+                   'heading: {heading} deg from north<br/>vertical rate: {vertical_rate} m/s<br/>'
+                   'on the ground: {on_ground}'.format(**info))
+        try:
+            angle = int(info['heading'])
+        except ValueError:
+            angle = 0
+
+        folium.Marker(
+            location=[info['lat'], info['lng']],
+            popup=summary,
+            icon=folium.Icon(icon='plane', angle=angle)
         ).add_to(m)
 
     filename = os.path.join(tempfile.gettempdir(), 'planes-around-map.html')
@@ -145,7 +158,7 @@ def get_user_location():
             'region': data.get('region'), 'city': data.get('city')}
 
 
-def filter_data(data, lat, lng, radius):
+def filter_data(data, lat, lng, radius, heading=None, heading_delta=0, on_the_ground=None, in_the_sky=None):
     '''Returns only data that matches the search criteria.
 
     Args:
@@ -157,9 +170,28 @@ def filter_data(data, lat, lng, radius):
         The data filtered by the selected parameters. Adds calculated distance to the data vector.
     '''
     logger.debug('Filtering data...')
+    # Check if returned data is valid
     valid_data = filter(lambda vec: all([vec[6], vec[5], len(vec) == 17]), data)
+    # Add a distance in km as a last value of received 'states' array
     valid_data = map(lambda vec: [*vec, vincenty((lat, lng), (vec[6], vec[5])).km], valid_data)
-    return filter(lambda vec: vec[-1] <= radius, valid_data)
+    # Filter by distance from selected city/position
+    filtered_data = filter(lambda vec: vec[-1] <= radius, valid_data)
+    # Filter by heading parameter
+    if heading:
+        if not heading_delta:
+            filtered_data = filter(lambda vec: vec[10] == heading, filtered_data)
+        else:
+            filtered_data = filter(
+                lambda vec: vec[10] <= heading + heading_delta and vec[10] >= heading - heading_delta,
+                filtered_data)
+    # Planes on the ground
+    if on_the_ground:
+        filtered_data = filter(lambda vec: vec[8], filtered_data)
+    # Planes in the sky
+    if in_the_sky:
+        filtered_data = filter(lambda vec: not vec[8], filtered_data)
+
+    return filtered_data
 
 
 def get_data():
