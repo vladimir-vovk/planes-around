@@ -4,7 +4,7 @@
 
 By default, it tries to determine your location by IP address and looks for planes within a radius of 500 km.
 
-![Screen shot](./screen.jpg)
+![Screen shot](./screen.png)
 
 ## Installation
 
@@ -26,11 +26,13 @@ planes_around
 ## Optional arguments:
 ```
 usage: planes_around [-h] [--lat LAT] [--lng LNG] [-r RADIUS] [-n NAME]
+                     [--heading HEADING] [--heading-delta HEADING_DELTA]
+                     [--no-map] [--no-map-radius]
                      [--on-the-ground | --in-the-sky]
 
-Get info about planes around the specified location using the OpenSky service. 
-By default, the program tries to determine your location by IP address and looks for
-planes within a radius of 500 km.
+Get info about planes around the specified location using the OpenSky service.
+By default, the program tries to determine your location by IP address and
+looks for planes within a radius of 500 km.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -38,9 +40,14 @@ optional arguments:
   --lng LNG             Longitude in degrees
   -r RADIUS, --radius RADIUS
                         Search planes within a radius (kilometers)
-  -n NAME, --name NAME  The name of the city or place near which you want to search
-
+  -n NAME, --name NAME  The name of the city or place near which you want to
+                        search
+  --heading HEADING     Filter planes by their direction in degrees in respect
+                        to the North clockwise
+  --heading-delta HEADING_DELTA
+                        Heading plus/minus a certain number of degrees
   --no-map              Don't show the map
+  --no-map-radius       Don't display radius circle on the map
   --on-the-ground       Show only planes on the ground
   --in-the-sky          Show only planes in the sky
 ```
